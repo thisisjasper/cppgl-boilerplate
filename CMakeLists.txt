@@ -9,5 +9,6 @@ project(
 find_package(glfw3 REQUIRED)
 
 add_subdirectory(src)
+add_subdirectory(external)
 
-target_link_libraries(cppgl-boilerplate glfw)
+target_link_libraries(cppgl-boilerplate glfw glad)
