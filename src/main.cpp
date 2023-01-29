@@ -1,8 +1,10 @@
 #include <iostream>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "app/app.hpp"
+#include "platform/window.hpp"
+#include <spdlog/spdlog.h>
 
 int main() {
-    std::cout << "YEET" << std::endl;
+    spdlog::info("YEET");
     return 0;
 }
