@@ -1,6 +1,9 @@
 #include "window.hpp"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <exception>
+#include <spdlog/spdlog.h>
+#include <functional>
 
 Window::Window(int w, int h, const std::string& title) : title(title), w(w), h(h) {
     glfwInit();
@@ -11,21 +14,33 @@ Window::Window(int w, int h, const std::string& title) : title(title), w(w), h(h
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE)
 #endif
     this->window = glfwCreateWindow(w, h, this->title.c_str(), NULL, NULL);
-    if (window != NULL) {
+    if (window == NULL) {
         glfwTerminate();
-        throw "FAILED TO CREATE GLFW WINDOW";
+        spdlog::error("Failed to create GLFW Window ({})", 0);
+        exit(0);
     }
     glfwMakeContextCurrent(this->window);
-}
-
-Window::Window(Window& rhs) {
-    
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        spdlog::error("Failed to intialize GLAD ({})", 1);
+        exit(1);
+    }    
 }
 
 Window::~Window() {
     glfwTerminate();
 }
 
-Window& Window::operator=(Window &rhs) {
-    return *this;
+Window::Window(Window&& rhs) {
+    this->window = rhs.window;
+    this->title = rhs.title;
+    this->w = rhs.w;
+    this->h = rhs.h;
+}
+
+void Window::run_loop() {
+    // loop here
+    while (!glfwWindowShouldClose(this->window)){
+        glfwSwapBuffers(this->window);
+        glfwPollEvents();    
+    }
 }

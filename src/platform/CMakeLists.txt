@@ -7,4 +7,4 @@ set(platform_src_files
 
 add_library(platform ${platform_src_files})
 target_include_directories(platform PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(platform glad)
+target_link_libraries(platform glad spdlog::spdlog)
